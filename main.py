@@ -1,6 +1,6 @@
 import pygame, sys, time
 from settings import *
-from sprites import BG,Ground
+from sprites import BG,Ground,Plane
 
 
 class Game:
@@ -17,12 +17,13 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
 
         #scale factor
-        bg_height = pygame.image.load('../FlappyBird/environment/background.png').get_height()
+        bg_height = pygame.image.load('graphics/environment/background.png').get_height()
         self.scale_factor = WINDOW_HEIGHT/bg_height
 
         #sprite setup
         BG(self.all_sprites,self.scale_factor)
         Ground(self.all_sprites,self.scale_factor)
+        self.plane = Plane(self.all_sprites,self.scale_factor/1.6)
 
     def run(self):
         last_time = time.time()
@@ -37,10 +38,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.plane.jump()
 
             # game logic
             self.display_surface.fill('black')
-            self.all_sprites.update(dt)
+            self.all_sprites.update(dt) #calls each sprite's update() method
             self.all_sprites.draw(self.display_surface)
 
             pygame.display.update()
