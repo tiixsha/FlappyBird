@@ -103,14 +103,14 @@ class Plane(pygame.sprite.Sprite):
         self.rotate()
 
 class Obstacles(pygame.sprite.Sprite):
-    def __init__(self,groups, scale_factor):        #like a constructor function, automatically runs when obj is created
+    def __init__(self,groups, scale_factor):        # like a constructor function, automatically runs when obj is created
         super().__init__(groups)
 
         orientation= choice(('up','down'))
         surf= pygame.image.load(f'./graphics/obstacles/{choice((0,1,2))}.png').convert_alpha()
         self.image = pygame.transform.scale(surf,pygame.math.Vector2(surf.get_size())* scale_factor)
 
-        x= WINDOW_WIDTH + randint(40, 100)  #Starts just beyond the right side
+        x= WINDOW_WIDTH + randint(40, 100)  # starts just beyond the right side
 
         if orientation== 'up':
             y= WINDOW_HEIGHT+ randint(10, 50)
