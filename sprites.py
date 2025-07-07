@@ -103,32 +103,38 @@ class Plane(pygame.sprite.Sprite):
         self.rotate()
 
 class Obstacles(pygame.sprite.Sprite):
-    def __init__(self,groups, scale_factor):        # like a constructor function, automatically runs when obj is created
+    def __init__(self, groups, scale_factor, orientation, x_pos, y_pos):
         super().__init__(groups)
 
-        orientation= choice(('up','down'))
-        surf= pygame.image.load(f'./graphics/obstacles/{choice((0,1,2))}.png').convert_alpha()
-        self.image = pygame.transform.scale(surf,pygame.math.Vector2(surf.get_size())* scale_factor)
+        # load and scale
+        surf = pygame.image.load(f'./graphics/obstacles/{choice((0,1,2))}.png').convert_alpha()
+        self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor)
 
-        x= WINDOW_WIDTH + randint(40, 100)  # starts just beyond the right side
-
-        if orientation== 'up':
-            y= WINDOW_HEIGHT+ randint(10, 50)
-            self.rect = self.image.get_rect(midbottom= (x,y))
-        else:
-            y= 0+ randint(-20, -10)
+        if orientation == 'down':
             self.image = pygame.transform.flip(self.image, False, True)
-            self.rect = self.image.get_rect(midtop= (x,y))
+            self.rect = self.image.get_rect(midtop=(x_pos, y_pos))
+        else:  # 'down'
+            self.rect = self.image.get_rect(midbottom=(x_pos, y_pos))
+        # pos
         self.pos= pygame.math.Vector2(self.rect.topleft)
 
         # mask
         self.mask = pygame.mask.from_surface(self.image)
+
+    def spawn_pipe_pair(groups, scale_factor):
+        gap_height = 250
+        x_pos = WINDOW_WIDTH + randint(40, 100)
+        y_pos = WINDOW_HEIGHT+randint(100,200)
+
+        # Bottom pipe
+        Obstacles(groups, scale_factor, 'up', x_pos, y_pos)
+
+        # Top pipe
+        y_pos = y_pos - WINDOW_HEIGHT- gap_height
+        Obstacles(groups, scale_factor, 'down', x_pos, y_pos)
 
     def update(self,dt):
         self.pos.x-= 500*dt
         self.rect.x= round(self.pos.x)
         if self.rect.right <=-100:
             self.kill()
-
-
-

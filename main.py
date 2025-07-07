@@ -1,4 +1,4 @@
-import pygame1, sys, time
+import pygame, sys, time
 from settings import *
 from sprites import BG,Ground,Plane, Obstacles
 
@@ -10,7 +10,7 @@ class Game:
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Flappy Bird')
-        self.clock = pygame.time.Clock() #creates a clock object
+        self.clock = pygame.time.Clock() # creates a clock object
 
         # sprite groups
         self.all_sprites = pygame.sprite.Group()
@@ -26,8 +26,8 @@ class Game:
         self.plane = Plane(self.all_sprites,self.scale_factor/1.6)
 
         #timer
-        self.obstacle_timer= pygame.USEREVENT +1  #own custom event/want to do something automatically
-        pygame.time.set_timer(self.obstacle_timer ,1000)
+        self.obstacle_timer= pygame.USEREVENT +1  # own custom event/want to do something automatically
+        pygame.time.set_timer(self.obstacle_timer ,900)
 
     def collisions(self):
         if pygame.sprite.spritecollide(self.plane, self.collision_sprites,False, pygame.sprite.collide_mask) \
@@ -52,9 +52,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self.plane.jump()
                 if event.type == self.obstacle_timer:
-                    Obstacles([self.all_sprites,self.collision_sprites], self.scale_factor*0.87)  #can be adjusted by *1.2 or more in scale
-
-
+                    Obstacles.spawn_pipe_pair([self.all_sprites, self.collision_sprites], self.scale_factor * 0.87)
 
             # game logic
             self.display_surface.fill('black')
