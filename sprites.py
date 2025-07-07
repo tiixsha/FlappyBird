@@ -107,7 +107,7 @@ class Obstacles(pygame.sprite.Sprite):
         super().__init__(groups)
 
         # load and scale
-        surf = pygame.image.load(f'./graphics/obstacles/{choice((0,1,2))}.png').convert_alpha()
+        surf = pygame.image.load(f'./graphics/obstacles/{choice((1,0))}.png').convert_alpha()
         self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor)
 
         if orientation == 'down':
@@ -122,9 +122,9 @@ class Obstacles(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
     def spawn_pipe_pair(groups, scale_factor):
-        gap_height = 250
+        gap_height = 300
         x_pos = WINDOW_WIDTH + randint(40, 100)
-        y_pos = WINDOW_HEIGHT+randint(100,200)
+        y_pos = WINDOW_HEIGHT+randint(80,100)
 
         # Bottom pipe
         Obstacles(groups, scale_factor, 'up', x_pos, y_pos)
