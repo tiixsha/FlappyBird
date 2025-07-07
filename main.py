@@ -44,7 +44,7 @@ class Game:
             dt = time.time() - last_time
             last_time = time.time()
 
-            # event loop
+            # event loopp
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
