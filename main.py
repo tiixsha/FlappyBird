@@ -1,4 +1,4 @@
-import pygame, sys, time
+import pygame1, sys, time
 from settings import *
 from sprites import BG,Ground,Plane, Obstacles
 
