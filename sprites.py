@@ -1,4 +1,7 @@
 import pygame
+
+import scoreboard
+from scoreboard import Scoreboard
 from settings import*
 from random import choice, randint
 
@@ -113,7 +116,7 @@ class Obstacles(pygame.sprite.Sprite):
         if orientation == 'down':
             self.image = pygame.transform.flip(self.image, False, True)
             self.rect = self.image.get_rect(midtop=(x_pos, y_pos))
-        else:  # 'down'
+        else:
             self.rect = self.image.get_rect(midbottom=(x_pos, y_pos))
         # pos
         self.pos= pygame.math.Vector2(self.rect.topleft)
@@ -136,5 +139,6 @@ class Obstacles(pygame.sprite.Sprite):
     def update(self,dt):
         self.pos.x-= 500*dt
         self.rect.x= round(self.pos.x)
-        if self.rect.right <=-100:
+        if self.rect.right <=-50:
+            scoreboard.Scoreboard.increase_score()
             self.kill()
