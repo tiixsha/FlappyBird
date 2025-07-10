@@ -1,7 +1,4 @@
 import pygame
-
-import scoreboard
-from scoreboard import Scoreboard
 from settings import*
 from random import choice, randint
 
@@ -110,7 +107,7 @@ class Obstacles(pygame.sprite.Sprite):
         super().__init__(groups)
 
         # load and scale
-        surf = pygame.image.load(f'./graphics/obstacles/{choice((1,0))}.png').convert_alpha()
+        surf = pygame.image.load('./graphics/obstacles/1.png').convert_alpha()
         self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor)
 
         if orientation == 'down':
@@ -127,7 +124,7 @@ class Obstacles(pygame.sprite.Sprite):
     def spawn_pipe_pair(groups, scale_factor):
         gap_height = 300
         x_pos = WINDOW_WIDTH + randint(40, 100)
-        y_pos = WINDOW_HEIGHT+randint(80,100)
+        y_pos = WINDOW_HEIGHT+randint(80,260)
 
         # Bottom pipe
         Obstacles(groups, scale_factor, 'up', x_pos, y_pos)
@@ -140,5 +137,4 @@ class Obstacles(pygame.sprite.Sprite):
         self.pos.x-= 500*dt
         self.rect.x= round(self.pos.x)
         if self.rect.right <=-50:
-            scoreboard.Scoreboard.increase_score()
             self.kill()

@@ -1,7 +1,7 @@
 import pygame, sys, time
 from settings import *
 from sprites import BG,Ground,Plane, Obstacles
-from scoreboard import Scoreboard
+
 
 
 class Game:
@@ -25,10 +25,6 @@ class Game:
         BG(self.all_sprites,self.scale_factor)    #like an obj creation
         Ground([self.all_sprites,self.collision_sprites],self.scale_factor)
         self.plane = Plane(self.all_sprites,self.scale_factor/1.6)
-
-        # scoreboard setup
-        self.scoreboard = Scoreboard()  # Create Scoreboard instance
-        self.all_sprites.add(self.scoreboard)
 
 
         #timer
@@ -68,7 +64,6 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.update(dt) #calls each sprite's update() method
             self.all_sprites.draw(self.display_surface)
-            self.display_surface.blit(self.scoreboard.score_text, (WINDOW_WIDTH // 2 - 30, 50))
             self.collisions()
             pygame.display.update()
             self.clock.tick(FRAME_RATE)
