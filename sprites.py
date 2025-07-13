@@ -56,7 +56,7 @@ class Ground(pygame.sprite.Sprite):
             self.pos.x = 0
         self.rect.x = round(self.pos.x)
 
-class Plane(pygame.sprite.Sprite):
+class Bird(pygame.sprite.Sprite):
     def __init__(self,groups,scale_factor):
         super().__init__(groups)
 
@@ -74,8 +74,8 @@ class Plane(pygame.sprite.Sprite):
     def import_frames(self,scale_factor):
         self.frames = []
         for i in range(3):
-            surf = pygame.image.load(f'./graphics/plane/red{i}.png').convert_alpha()
-            scaled_surface = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.4)
+            surf = pygame.image.load(f'./graphics/bird/bird{i}.png').convert_alpha()
+            scaled_surface = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.8)
             self.frames.append(scaled_surface)
 
     def apply_gravity(self,dt):
@@ -122,9 +122,9 @@ class Obstacles(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
     def spawn_pipe_pair(groups, scale_factor):
-        gap_height = 125
+        gap_height = 105
         x_pos = WINDOW_WIDTH + randint(40, 100)
-        y_pos = WINDOW_HEIGHT+randint(20,100)
+        y_pos = WINDOW_HEIGHT+randint(20,110)
 
         # Bottom pipe
         Obstacles(groups, scale_factor, 'up', x_pos, y_pos)

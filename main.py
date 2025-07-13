@@ -1,6 +1,6 @@
 import pygame, sys, time
 from settings import *
-from sprites import BG,Ground,Plane, Obstacles
+from sprites import BG,Ground,Bird, Obstacles
 
 class Game:
     def __init__(self):   # set up starting values (like position, score, health
@@ -22,7 +22,7 @@ class Game:
         #sprite setup
         BG(self.all_sprites,self.scale_factor)    #like an obj creation
         Ground([self.all_sprites,self.collision_sprites],self.scale_factor)
-        self.plane = Plane(self.all_sprites,self.scale_factor/1.6)
+        self.plane = Bird(self.all_sprites,self.scale_factor/1.6)
 
 
         #timer
