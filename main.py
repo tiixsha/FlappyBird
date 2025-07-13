@@ -2,8 +2,6 @@ import pygame, sys, time
 from settings import *
 from sprites import BG,Ground,Plane, Obstacles
 
-
-
 class Game:
     def __init__(self):   # set up starting values (like position, score, health
 
@@ -50,13 +48,14 @@ class Game:
 
 
 
-            # event loop
+            # event loopp
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.plane.jump()
+                if event.type == pygame.KEYDOWN:
+                    if event.key== pygame.K_SPACE:
+                        self.plane.jump()
                 if event.type == self.obstacle_timer:
                     Obstacles.spawn_pipe_pair([self.all_sprites, self.collision_sprites], self.scale_factor * 0.87)
 

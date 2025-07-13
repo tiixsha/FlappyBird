@@ -75,7 +75,7 @@ class Plane(pygame.sprite.Sprite):
         self.frames = []
         for i in range(3):
             surf = pygame.image.load(f'./graphics/plane/red{i}.png').convert_alpha()
-            scaled_surface = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor)
+            scaled_surface = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.4)
             self.frames.append(scaled_surface)
 
     def apply_gravity(self,dt):
@@ -108,7 +108,7 @@ class Obstacles(pygame.sprite.Sprite):
 
         # load and scale
         surf = pygame.image.load('./graphics/obstacles/1.png').convert_alpha()
-        self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor)
+        self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.2)
 
         if orientation == 'down':
             self.image = pygame.transform.flip(self.image, False, True)
@@ -122,9 +122,9 @@ class Obstacles(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
     def spawn_pipe_pair(groups, scale_factor):
-        gap_height = 300
+        gap_height = 125
         x_pos = WINDOW_WIDTH + randint(40, 100)
-        y_pos = WINDOW_HEIGHT+randint(80,260)
+        y_pos = WINDOW_HEIGHT+randint(20,100)
 
         # Bottom pipe
         Obstacles(groups, scale_factor, 'up', x_pos, y_pos)
