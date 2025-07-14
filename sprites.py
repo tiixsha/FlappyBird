@@ -68,7 +68,7 @@ class Bird(pygame.sprite.Sprite):
         #rect
         self.rect = self.image.get_rect(midleft = (WINDOW_WIDTH/20,WINDOW_HEIGHT/2))
         self.pos = pygame.math.Vector2(self.rect.topleft)
-        self.gravity = 950
+        self.gravity = 975
         self.direction = 0
 
     def import_frames(self,scale_factor):
@@ -103,35 +103,40 @@ class Bird(pygame.sprite.Sprite):
         self.rotate()
 
 class Obstacles(pygame.sprite.Sprite):
-    def __init__(self, groups, scale_factor, orientation, x_pos, y_pos):
+    def __init__(self, groups, scale_factor, orientation, x_pos, y_pos, is_scorer=False):  # Add is_scorer
         super().__init__(groups)
+        self.is_scorer = is_scorer  # Marks if this is a scoring trigger
 
-        # load and scale
-        surf = pygame.image.load('./graphics/obstacles/1.png').convert_alpha()
-        self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.2)
+        if not self.is_scorer:  # Normal pipe logic
+            surf = pygame.image.load('./graphics/obstacles/1.png').convert_alpha()
+            self.image = pygame.transform.scale(surf, pygame.math.Vector2(surf.get_size()) * scale_factor*1.2)
 
-        if orientation == 'down':
-            self.image = pygame.transform.flip(self.image, False, True)
-            self.rect = self.image.get_rect(midtop=(x_pos, y_pos))
-        else:
-            self.rect = self.image.get_rect(midbottom=(x_pos, y_pos))
-        # pos
-        self.pos= pygame.math.Vector2(self.rect.topleft)
+            if orientation == 'down':
+                self.image = pygame.transform.flip(self.image, False, True)
+                self.rect = self.image.get_rect(midtop=(x_pos, y_pos))
+            else:
+                self.rect = self.image.get_rect(midbottom=(x_pos, y_pos))
 
-        # mask
-        self.mask = pygame.mask.from_surface(self.image)
+            self.mask = pygame.mask.from_surface(self.image)
+        else:  # Invisible scoring trigger
+            self.image = pygame.Surface((10, 1), pygame.SRCALPHA)  # Tiny invisible surface
+            self.rect = self.image.get_rect(center=(x_pos, y_pos))
+
+        self.pos = pygame.math.Vector2(self.rect.topleft)
 
     def spawn_pipe_pair(groups, scale_factor):
-        gap_height = 105
+        gap_height = 100
         x_pos = WINDOW_WIDTH + randint(40, 100)
-        y_pos = WINDOW_HEIGHT+randint(20,110)
+        y_pos_bottom = WINDOW_HEIGHT+randint(20,110)
 
         # Bottom pipe
-        Obstacles(groups, scale_factor, 'up', x_pos, y_pos)
+        Obstacles(groups, scale_factor, 'up', x_pos, y_pos_bottom)
 
         # Top pipe
-        y_pos = y_pos - WINDOW_HEIGHT- gap_height
-        Obstacles(groups, scale_factor, 'down', x_pos, y_pos)
+        y_pos_top = y_pos_bottom - WINDOW_HEIGHT- gap_height
+        Obstacles(groups, scale_factor, 'down', x_pos, y_pos_top)
+        # Invisible scoring trigger (placed between pipes)
+        Obstacles(groups, scale_factor, None, x_pos + 50, (y_pos_bottom + y_pos_top) // 2, is_scorer=True)
 
     def update(self,dt):
         self.pos.x-= 500*dt
